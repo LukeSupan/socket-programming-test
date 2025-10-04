@@ -29,16 +29,22 @@ while True:
     # Receive data (up to 1024 bytes), decode from bytes → str
     problem = connectionSocket.recv(1024).decode()
 
+    # 0/0= is exit condition
     if(problem == "0/0="):
         connectionSocket.close()
         break
-
+    
+    # Get rid of the = for splitting
     problem = problem.rstrip("=")
     
-    # Parse solution into two operands and an operator
-    operand1, operator, operand2 = problem.split()
+    # Split the problem around the operator
+    for op in "+-*/":
+        if op in problem:
+            operand1, operand2 = problem.split(op)
+            operator = op
+            break
     
-    # Based on the operator, compute the solution
+    # Based on the operator, compute the solution. If the problem is invalid (divide by 0, return input error)
     if operator == '+':
         solution = "Answer from server: " + str(int(operand1) + int(operand2))
     elif operator == '-':
@@ -46,9 +52,12 @@ while True:
     elif operator == '*':
         solution = "Answer from server: " + str(int(operand1) * int(operand2))
     elif operator == '/':
-        solution = "Answer from server: " + str(int(operand1) / int(operand2))
+        if int(operand2) == 0:
+            solution = "Input error. Re-type the math question again"
+        else:
+            solution = "Answer from server: " + str(int(operand1) / int(operand2))
     else:
-        solution = "Invalid input"
+        solution = "Input error. Re-type the math question again"
     
     # Send back the modified message (encode str → bytes)
     connectionSocket.send(solution.encode())
@@ -56,3 +65,6 @@ while True:
     # Close this client connection
     # The main server socket (serverSocket) remains open for new clients
     connectionSocket.close()
+
+# Close the full socket when out of the loop
+serverSocket.close()

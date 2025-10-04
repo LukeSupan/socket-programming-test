@@ -7,27 +7,33 @@ from socket import *
 serverName = "localhost"   # Use "localhost" when client and server are on same machine
 serverPort = 12000         # Must match the server’s listening port
 
-# Create socket called clientSocket and establish a TCP connection with the server
-# AF_INET = IPv4, SOCK_STREAM = TCP protocol
-clientSocket = socket(AF_INET, SOCK_STREAM)
+while True:
 
-# Initiate TCP connection (3-way handshake with server)
-# The OS assigns a local ephemeral port automatically
-clientSocket.connect((serverName, serverPort))
+    # Create socket called clientSocket and establish a TCP connection with the server
+    # AF_INET = IPv4, SOCK_STREAM = TCP protocol
+    clientSocket = socket(AF_INET, SOCK_STREAM)
 
-# Prompt user for input (one sentence in lowercase)
-problem = input('Input math problem: ')
+    # Initiate TCP connection (3-way handshake with server)
+    # The OS assigns a local ephemeral port automatically
+    clientSocket.connect((serverName, serverPort))
 
-# Send the input string to the server, converting from string → bytes
-clientSocket.send(problem.encode())
+    # Prompt user for input (math problem a+b=)
+    problem = input('Input math problem: ')
 
-# Wait to receive up to 1024 bytes from the server
-# recv() blocks until data arrives or connection closes
-solution = clientSocket.recv(1024)
+    # Send the input string to the server, converting from string → bytes
+    clientSocket.send(problem.encode())
 
-# Decode server’s response (bytes → str) and display
-print('From Server:', solution.decode())
+    # Exit condition, close the socket and break the loop
+    if problem == "0/0=":
+        clientSocket.close()
+        break
 
-# Close the socket
-# This sends a FIN to the server to gracefully terminate the connection
-clientSocket.close()
+    # Wait to receive up to 1024 bytes from the server
+    # recv() blocks until data arrives or connection closes
+    solution = clientSocket.recv(1024)
+
+    # Decode server’s response (bytes → str) and display
+    print('From Server:', solution.decode())
+
+    # Close the client socket after each problem
+    clientSocket.close()
