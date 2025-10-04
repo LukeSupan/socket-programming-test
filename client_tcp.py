@@ -27,17 +27,17 @@ clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName, serverPort))
 
 # Prompt user for input (one sentence in lowercase)
-sentence = input('Input math problem: ')
+sentence = input('Input lowercase sentence:')
 
-# Send the input string to the server, converting from int → bytes
+# Send the input string to the server, converting from str → bytes
 clientSocket.send(sentence.encode())
 
 # Wait to receive up to 1024 bytes from the server
 # recv() blocks until data arrives or connection closes
-solvedProblem = clientSocket.recv(1024)
+modifiedSentence = clientSocket.recv(1024)
 
 # Decode server’s response (bytes → str) and display
-print('From Server:', solvedProblem.decode())
+print('From Server:', modifiedSentence.decode())
 
 # Close the socket
 # This sends a FIN to the server to gracefully terminate the connection

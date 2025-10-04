@@ -1,16 +1,5 @@
-# CNT4704 – Analysis of Communication Networks
-# UCF 2025
-# Author: Prof. Al Kinoon
-#
-# TCP Client Program
-# ------------------
-# This client sends a lowercase string to a TCP server.
-# The server receives it, converts the string to uppercase,
-# and sends it back. The client prints the server’s response
-# and then terminates the connection.
-#
-# Protocol: TCP (connection-oriented, reliable byte stream).
-# Acknowledgment: Kurose & Ross (Computer Networking textbook).
+# client_tcp_luke.py
+# for CNT4704
 
 from socket import *
 
@@ -27,17 +16,17 @@ clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName, serverPort))
 
 # Prompt user for input (one sentence in lowercase)
-sentence = input('Input lowercase sentence:')
+problem = input('Input math problem: ')
 
-# Send the input string to the server, converting from str → bytes
-clientSocket.send(sentence.encode())
+# Send the input string to the server, converting from string → bytes
+clientSocket.send(problem.encode())
 
 # Wait to receive up to 1024 bytes from the server
 # recv() blocks until data arrives or connection closes
-modifiedSentence = clientSocket.recv(1024)
+solution = clientSocket.recv(1024)
 
 # Decode server’s response (bytes → str) and display
-print('From Server:', modifiedSentence.decode())
+print('From Server:', solution.decode())
 
 # Close the socket
 # This sends a FIN to the server to gracefully terminate the connection

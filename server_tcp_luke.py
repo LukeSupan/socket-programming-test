@@ -1,19 +1,5 @@
-# CNT4704 – Analysis of Communication Networks
-# UCF 2025
-# Author: Prof. Al Kinoon
-#
-# TCP Server Program
-# ------------------
-# Listens on port 12000 and waits for incoming TCP connections.
-# For each client connection:
-#   1. Receives one lowercase sentence.
-#   2. Converts it to uppercase.
-#   3. Sends the result back to the client.
-#   4. Closes the connection.
-# The server then loops back to wait for another client.
-#
-# Protocol: TCP (connection-oriented, reliable byte stream).
-# Acknowledgment: Kurose & Ross (Computer Networking textbook).
+# server_tcp_luke.py
+# for CNT4704
 
 from socket import *
 
@@ -41,13 +27,31 @@ while True:
     connectionSocket, addr = serverSocket.accept()
     
     # Receive data (up to 1024 bytes), decode from bytes → str
-    sentence = connectionSocket.recv(1024).decode()
+    problem = connectionSocket.recv(1024).decode()
+
+    if(problem == "0/0="):
+        connectionSocket.close()
+        break
+
+    problem = problem.rstrip("=")
     
-    # Convert message to uppercase
-    capitalizedSentence = sentence.upper()
+    # Parse solution into two operands and an operator
+    operand1, operator, operand2 = problem.split()
+    
+    # Based on the operator, compute the solution
+    if operator == '+':
+        solution = "Answer from server: " + str(int(operand1) + int(operand2))
+    elif operator == '-':
+        solution = "Answer from server: " + str(int(operand1) - int(operand2))
+    elif operator == '*':
+        solution = "Answer from server: " + str(int(operand1) * int(operand2))
+    elif operator == '/':
+        solution = "Answer from server: " + str(int(operand1) / int(operand2))
+    else:
+        solution = "Invalid input"
     
     # Send back the modified message (encode str → bytes)
-    connectionSocket.send(capitalizedSentence.encode())
+    connectionSocket.send(solution.encode())
     
     # Close this client connection
     # The main server socket (serverSocket) remains open for new clients
