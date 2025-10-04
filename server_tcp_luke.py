@@ -8,7 +8,7 @@ from socket import *
 serverSocket = socket(AF_INET, SOCK_STREAM)
 
 # Assign a port number
-serverPort = 12000
+serverPort = 10400
 
 # Bind the socket to the server address and port
 # '' means bind to all available network interfaces (0.0.0.0)
@@ -38,10 +38,10 @@ while True:
     problem = problem.rstrip("=")
     
     # Split the problem around the operator
-    for op in "+-*/":
-        if op in problem:
-            operand1, operand2 = problem.split(op)
-            operator = op
+    for foundOperator in "+-*/":
+        if foundOperator in problem:
+            operand1, operand2 = problem.split(foundOperator)
+            operator = foundOperator
             break
     
     # Based on the operator, compute the solution. If the problem is invalid (divide by 0, return input error)
@@ -65,6 +65,3 @@ while True:
     # Close this client connection
     # The main server socket (serverSocket) remains open for new clients
     connectionSocket.close()
-
-# Close the full socket when out of the loop
-serverSocket.close()

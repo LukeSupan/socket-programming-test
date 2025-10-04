@@ -4,8 +4,8 @@
 from socket import *
 
 # Define server address and port
-serverName = "localhost"   # Use "localhost" when client and server are on same machine
-serverPort = 12000         # Must match the server’s listening port
+serverName = "eustis3.eecs.ucf.edu"   # Use "localhost" when client and server are on same machine
+serverPort = 10400         # Must match the server’s listening port
 
 while True:
 
