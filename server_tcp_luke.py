@@ -46,16 +46,16 @@ while True:
     
     # Based on the operator, compute the solution. If the problem is invalid (divide by 0, return input error)
     if operator == '+':
-        solution = "Answer from server: " + str(int(operand1) + int(operand2))
+        solution = "Answer from server: " + str(float(operand1) + float(operand2))
     elif operator == '-':
-        solution = "Answer from server: " + str(int(operand1) - int(operand2))
+        solution = "Answer from server: " + str(float(operand1) - float(operand2))
     elif operator == '*':
-        solution = "Answer from server: " + str(int(operand1) * int(operand2))
+        solution = "Answer from server: " + str(float(operand1) * float(operand2))
     elif operator == '/':
-        if int(operand2) == 0:
+        if float(operand2) == 0:
             solution = "Input error. Re-type the math question again"
         else:
-            solution = "Answer from server: " + str(int(operand1) / int(operand2))
+            solution = "Answer from server: " + str(float(operand1) / float(operand2))
     else:
         solution = "Input error. Re-type the math question again"
     
