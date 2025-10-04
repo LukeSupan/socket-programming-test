@@ -23,9 +23,8 @@ while True:
     # Send the input string to the server, converting from string → bytes
     clientSocket.send(problem.encode())
 
-    # Exit condition, close the socket and break the loop
+    # Exit condition, after the server gets the input and closes, break the loop
     if problem == "0/0=":
-        clientSocket.close()
         break
 
     # Wait to receive up to 1024 bytes from the server

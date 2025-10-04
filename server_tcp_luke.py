@@ -31,7 +31,6 @@ while True:
 
     # 0/0= is exit condition
     if(problem == "0/0="):
-        connectionSocket.close()
         break
     
     # Get rid of the = for splitting
@@ -65,3 +64,7 @@ while True:
     # Close this client connection
     # The main server socket (serverSocket) remains open for new clients
     connectionSocket.close()
+
+# Close sockets after breaking the loop
+connectionSocket.close()
+serverSocket.close()
