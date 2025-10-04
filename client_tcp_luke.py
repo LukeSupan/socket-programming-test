@@ -7,6 +7,10 @@ from socket import *
 serverName = "eustis3.eecs.ucf.edu"   # Use "localhost" when client and server are on same machine
 serverPort = 10400         # Must match the server’s listening port
 
+# Print the server IP as it says in example of webcourses
+serverIP = gethostbyname(serverName)
+print("Connected with server on [" + serverIP + "]")
+
 while True:
 
     # Create socket called clientSocket and establish a TCP connection with the server
@@ -18,13 +22,14 @@ while True:
     clientSocket.connect((serverName, serverPort))
 
     # Prompt user for input (math problem a+b=)
-    problem = input('Input math problem: ')
+    problem = input()
 
     # Send the input string to the server, converting from string → bytes
     clientSocket.send(problem.encode())
 
     # Exit condition, after the server gets the input and closes, break the loop
     if problem == "0/0=":
+        print("User input ends; end the client program")
         break
 
     # Wait to receive up to 1024 bytes from the server
@@ -32,7 +37,7 @@ while True:
     solution = clientSocket.recv(1024)
 
     # Decode server’s response (bytes → str) and display
-    print('From Server:', solution.decode())
+    print('Answer from server:', solution.decode())
 
     # Close the client socket after each problem
     clientSocket.close()

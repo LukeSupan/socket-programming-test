@@ -18,19 +18,28 @@ serverSocket.bind(('', serverPort))
 # Argument = backlog (max number of queued connections)
 serverSocket.listen(1)
 
-print("The server is ready to receive")
+firstLoop = True
 
 # Main server loop (runs indefinitely until manually stopped)
 while True:
+
     # Accept a new connection from a client
     # Returns a new socket (connectionSocket) and client address info
     connectionSocket, addr = serverSocket.accept()
+
+    # It seems we only print this on the first loop
+    # Print the client IP as it says in example of webcourses
+    if firstLoop:
+        print("Connected by client on [" + addr[0] + "]")
+        firstLoop = False
     
     # Receive data (up to 1024 bytes), decode from bytes → str
     problem = connectionSocket.recv(1024).decode()
 
+
     # 0/0= is exit condition
     if(problem == "0/0="):
+        print('Received question: "0/0="; end the server program', problem)
         break
     
     # Get rid of the = for splitting
@@ -45,18 +54,20 @@ while True:
     
     # Based on the operator, compute the solution. If the problem is invalid (divide by 0, return input error)
     if operator == '+':
-        solution = "Answer from server: " + str(float(operand1) + float(operand2))
+        solution = str(float(operand1) + float(operand2))
     elif operator == '-':
-        solution = "Answer from server: " + str(float(operand1) - float(operand2))
+        solution = str(float(operand1) - float(operand2))
     elif operator == '*':
-        solution = "Answer from server: " + str(float(operand1) * float(operand2))
+        solution = str(float(operand1) * float(operand2))
     elif operator == '/':
         if float(operand2) == 0:
             solution = "Input error. Re-type the math question again"
         else:
-            solution = "Answer from server: " + str(float(operand1) / float(operand2))
+            solution = str(float(operand1) / float(operand2))
     else:
         solution = "Input error. Re-type the math question again"
+
+    print('Received question:"' + problem + '" send back answer: ' + solution)
     
     # Send back the modified message (encode str → bytes)
     connectionSocket.send(solution.encode())
