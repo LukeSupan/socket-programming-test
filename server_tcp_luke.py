@@ -39,7 +39,7 @@ while True:
 
     # 0/0= is exit condition
     if(problem == "0/0="):
-        print('Received question: "0/0="; end the server program', problem)
+        print('Received question: "0/0="; end the server program')
         break
     
     # Get rid of the = for splitting
